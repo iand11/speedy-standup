@@ -8,6 +8,8 @@ require('dotenv').config()
 const username = process.env.USERNAME;
 const password = process.env.PASSWORD;
 
+console.log(username)
+
 const uri = `mongodb+srv://${username}:${password}@cluster0.hkrzv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 app.set('view engine', 'ejs')
 
