@@ -41,6 +41,6 @@ MongoClient.connect(uri, { useUnifiedTopology: true })
 
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.listen(process.env.PORT || 3000, function () {
+app.listen(process.env.PORT || 80, function () {
   console.log('listening on 3000')
 })
