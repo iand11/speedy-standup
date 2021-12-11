@@ -2,10 +2,13 @@ const App = require("../models/model.js");
 
 // Create and Save a new Message
 exports.create = (req, res) => {
-  const blocker = new App({
-    blocker: req.body,
+  const { name, blocker, ticket } = req.body
+  const newBlocker = new App({
+    name,
+    blocker,
+    ticket,
   });
-  blocker
+  newBlocker
     .save()
     .then((data) => {
       res.send(data);
