@@ -10,23 +10,24 @@ const password = process.env.PASSWORD;
 
 console.log(username)
 
-const uri = `mongodb+srv://${username}:${password}@cluster0.hkrzv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${username}:${password}@cluster0.hkrzv.mongodb.net/speedy-standup?retryWrites=true&w=majority`;
 app.set('view engine', 'ejs')
 
-MongoClient.connect(uri, { useUnifiedTopology: true })
-  .then(client => {
-    console.log('Connected to Database')
-    const db = client.db('speedy-standup');
-    const blockersCollection = db.collection('blockers');
+// MongoClient.connect(uri, { useUnifiedTopology: true })
+//   .then(client => {
+//     console.log('Connected to Database')
+//     const db = client.db('speedy-standup');
+//     const blockersCollection = db.collection('blockers');
 
     app.get('/', (req, res) => {
-      const currentDay = new Date();
-      db.collection('blockers').find().toArray()
-        .then(results => {
-          const correctResults = results.filter((res) => moment(res.createdAt).isSame(currentDay, 'day'));
-          res.render('index.ejs', { blockers: correctResults })
-        })
-        .catch(error => console.error(error))
+      res.render('index.ejs', { blockers: [] })
+      // const currentDay = new Date();
+      // db.collection('blockers').find().toArray()
+      //   .then(results => {
+      //     const correctResults = results.filter((res) => moment(res.createdAt).isSame(currentDay, 'day'));
+      //     res.render('index.ejs', { blockers: correctResults })
+      //   })
+      //   .catch(error => console.error(error))
 
     })
 
@@ -38,8 +39,8 @@ MongoClient.connect(uri, { useUnifiedTopology: true })
         })
         .catch(error => console.error(error))
     })
-  })
-  .catch(error => console.error(error))
+  // })
+  // .catch(error => console.error(error))
 
 app.use(bodyParser.urlencoded({ extended: true }))
 
