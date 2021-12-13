@@ -5,7 +5,9 @@ const bodyParser = require('body-parser')
 const { MongoClient } = require('mongodb');
 const moment = require('moment');
 const mongoose = require('mongoose');
+const cors = require('cors')
 
+app.use(cors());
 mongoose.Promise = global.Promise;
 
 const username = process.env.USERNAME;
