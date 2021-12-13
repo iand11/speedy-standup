@@ -3,9 +3,11 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser')
 const { MongoClient } = require('mongodb');
-const moment = require('moment');
 const mongoose = require('mongoose');
 const cors = require('cors')
+
+const user = require("./app/routes/user");
+const blocker = require('./app/routes/blocker.js');
 
 app.use(cors());
 mongoose.Promise = global.Promise;
@@ -28,7 +30,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(bodyParser.json());
 
-require('./app/routes/routes.js')(app);
+app.use("/user", user);
+
+app.use("/blocker", blocker);
 
 app.listen(process.env.PORT || 3000, function () {
   console.log('listening on 3000')

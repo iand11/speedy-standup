@@ -1,9 +1,9 @@
-const App = require("../models/model.js");
+const Blocker = require("../models/blocker-model.js");
 
 // Create and Save a new Message
 exports.create = (req, res) => {
   const { name, blocker, ticket } = req.body
-  const newBlocker = new App({
+  const newBlocker = new Blocker({
     name,
     blocker,
     ticket,
@@ -23,7 +23,7 @@ exports.create = (req, res) => {
 
 // Retrieve all messages from the database.
 exports.findAll = (req, res) => {
-  App.find()
+  Blocker.find()
     .then((data) => {
       res.send(data);
     })
@@ -37,7 +37,7 @@ exports.findAll = (req, res) => {
 
 // Find a single message with a blockerId
 exports.findOne = (req, res) => {
-  App.findById(req.params.blockerId)
+  Blocker.findById(req.params.blockerId)
     .then((data) => {
       if (!data) {
         return res.status(404).send({
@@ -60,7 +60,7 @@ exports.findOne = (req, res) => {
 
 // Update a message identified by the blockerId in the request
 exports.update = (req, res) => {
-  App.findByIdAndUpdate(
+  Blocker.findByIdAndUpdate(
     req.params.blockerId,
     {
       blocker: req.body.blocker,
@@ -89,7 +89,7 @@ exports.update = (req, res) => {
 
 // Delete a message with the specified blockerId in the request
 exports.delete = (req, res) => {
-  App.findByIdAndRemove(req.params.blockerId)
+  Blocker.findByIdAndRemove(req.params.blockerId)
     .then((data) => {
       if (!data) {
         return res.status(404).send({
