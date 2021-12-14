@@ -70,8 +70,9 @@ exports.login = async (req, res) => {
 
     jwt.sign(payload, "randomString", { expiresIn: 3600 },
       (err, token) => {
+        const { name, email, id } = user;
         if (err) throw err;
-        res.status(200).json({ token });
+        res.status(200).json({ token, id, name, email });
       }
     );
   } catch (e) {
