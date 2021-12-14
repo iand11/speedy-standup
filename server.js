@@ -7,7 +7,7 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
 const cors = require('cors');
 const { Server } = require("socket.io");
-var io = require('socket.io')(server, {path: '/socket.io'});
+const io = new Server(server);
 
 const user = require("./app/routes/user");
 const blocker = require('./app/routes/blocker.js');
@@ -39,12 +39,12 @@ app.use("/user", user);
 
 app.use("/blocker", blocker);
 
-console.log('IO', io);
+console.log('IO', io.request)
 
 io.on('connection', (socket) => {
   console.log('a user connected');
 });
 
-app.listen(4000, function () {
+app.listen(process.env.PORT || 3000, function () {
   console.log('listening on 3000')
-})
+});
