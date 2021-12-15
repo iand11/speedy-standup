@@ -1,17 +1,13 @@
 require('dotenv').config()
 const express = require('express');
 const app = express();
-const http = require('http');
-const server = http.createServer(app);
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
 const cors = require('cors');
-const { Server } = require("socket.io");
-const io = new Server(server);
+const socket = require('socket.io')
 
 const user = require("./app/routes/user");
 const blocker = require('./app/routes/blocker.js');
-
 
 app.use(cors());
 mongoose.Promise = global.Promise;
@@ -34,17 +30,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(bodyParser.json());
 
-
 app.use("/user", user);
 
 app.use("/blocker", blocker);
 
-console.log('IO', io.request)
-
-io.on('connection', (socket) => {
-  console.log('a user connected');
+const server = app.listen(3001, function () {
+  console.log('listening on 3000')
 });
 
-app.listen(process.env.PORT || 3000, function () {
-  console.log('listening on 3000')
+const io = socket(server);
+
+io.on('connection', (socket) => {
+  socket.on('message', (data) => {
+    io.emit('message', data);
+  });
 });
