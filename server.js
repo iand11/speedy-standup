@@ -34,7 +34,7 @@ app.use("/user", user);
 
 app.use("/blocker", blocker);
 
-const server = app.listen(3001, function () {
+const server = app.listen(process.env.PORT || 3000, function () {
   console.log('listening on 3000')
 });
 
