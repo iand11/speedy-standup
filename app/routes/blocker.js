@@ -1,16 +1,28 @@
 const express = require("express");
+const { check } = require("express-validator/check");
 const router = express.Router();
 const Blocker = require("../controllers/blocker-controllers.js");
-const auth = require('../middleware/auth');
+const auth = require("../middleware/auth");
 
-router.post("/create", auth, Blocker.create);
+const { create, findAll, findOne, update, remove } = Blocker;
 
-router.get("/get-all", Blocker.findAll);
+router.post(
+  "/create",
+  auth,
+  [
+    check("name", "Please Enter a Valid Name").not().isEmpty(),
+    check("blocker", "Please Enter a Valid Blocker").not().isEmpty(),
+    check("ticket", "Please Enter a Valid Ticket").not().isEmpty(),
+  ],
+  create
+);
 
-router.get("/:blockerId", auth, Blocker.findOne);
+router.get("/get-all", findAll);
 
-router.put("/:blockerId", auth,  Blocker.update);
+router.get("/:blockerId", auth, findOne);
 
-router.delete("/:blockerId", auth, Blocker.delete);
+router.put("/:blockerId", auth, update);
+
+router.delete("/:blockerId", auth, remove);
 
 module.exports = router;

@@ -1,16 +1,12 @@
-const { validationResult } = require("express-validator/check");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/user-model");
+const { handleValidationErrors, checkValidations } = require('../util/validation')
 
 exports.create = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array()
-    });
-  }
+  const errors = checkValidations(req);
+  if (!errors.isEmpty()) handleValidationErrors(res, errors);
 
   const { name, email, password } = req.body;
   try {
@@ -35,8 +31,9 @@ exports.create = async (req, res) => {
 
     jwt.sign(payload, "randomString", { expiresIn: 10000 },
       (err, token) => {
+        const { name, email, id } = user;
         if (err) throw err;
-        res.status(200).json({ token });
+        res.status(200).json({ token, name, email, id });
       }
     );
   } catch (err) {
@@ -46,13 +43,8 @@ exports.create = async (req, res) => {
 }
 
 exports.login = async (req, res) => {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array()
-    });
-  }
+  const errors = checkValidations(req);
+  if (!errors.isEmpty()) handleValidationErrors(res, errors);
 
   const { email, password } = req.body;
   try {

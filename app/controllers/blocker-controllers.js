@@ -1,7 +1,11 @@
 const Blocker = require("../models/blocker-model.js");
+const { handleValidationErrors, checkValidations } = require('../util/validation')
 
 // Create and Save a new Message
 exports.create = (req, res) => {
+  const errors = checkValidations(req);
+  if (!errors.isEmpty()) handleValidationErrors(res, errors);
+
   const { name, blocker, ticket } = req.body
   const newBlocker = new Blocker({
     name,
@@ -88,7 +92,7 @@ exports.update = (req, res) => {
 };
 
 // Delete a message with the specified blockerId in the request
-exports.delete = (req, res) => {
+exports.remove = (req, res) => {
   Blocker.findByIdAndRemove(req.params.blockerId)
     .then((data) => {
       if (!data) {
