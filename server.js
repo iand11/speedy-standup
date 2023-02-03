@@ -12,10 +12,9 @@ const blocker = require('./app/routes/blocker.js');
 app.use(cors());
 mongoose.Promise = global.Promise;
 
-const username = process.env.USERNAME;
-const password = process.env.PASSWORD;
+const { USERNAME, PASSWORD } = process.env;
 
-const uri = `mongodb+srv://${username}:${password}@cluster0.hkrzv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${USERNAME}:${PASSWORD}@cluster0.hkrzv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
 mongoose.connect(uri, {
   useNewUrlParser: true
